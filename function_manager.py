@@ -7,7 +7,7 @@ class FunctionsManager: # basically creating a function with functions in it lik
 
     def add_function(self, expression): #where it says self itll replace with that lists name so in this case fm and expression is the variable. so when we it runs self.functions.append its actually doign fm.functions.append and adding whatever we input to the end of the list "functions"
         expr = sp.sympify(expression)#this turns goofy ass x**2 into actual maths so x to the power of 2. symbolic expression not a string so we cana actually do maths with it :D
-        self.functions.append(expr) #mentioned in the first line for this block append just chucks whatever variable we put inside add_function(^^^) to the end of the list
+        self.functions.append(expr) #mentioned in the first line for this block append just chucks whatever variable we put inside add_function(^^^) to the end of the list simpyfied into a readable math shi
     
     def print_functions(self):#defining the function
         for func in self.functions:# for random "ass name" inside of the list self.functions() print one variable then go onto the next and print that
@@ -32,3 +32,18 @@ class FunctionsManager: # basically creating a function with functions in it lik
             gradient = derivative.subs(self.x, value) #for the previous answer (derivative) substitute the value we input for x (value) to get the gradient at that point which is stored as "gradient"
             gradients.append(gradient) #add the calculated gradient to the end of the list "gradients"
         return gradients #returns the list of gradients to be used if needed
+    def eval_tangents(self, value):
+        tangents = [] #list to store the tangent line equations
+        for func in self.functions: #same as previous functions and the ones before that it was at this point that i recognised a pattern
+            derivative = sp.diff(func, self.x) #derive each function (func) with respect to x (self.x) 
+            gradient = derivative.subs(self.x, value) #for the previous answer (derivative) substitute the value we input for x (value) to get the gradient at that point which is stored as "gradient"
+            y_value = func.subs(self.x, value) #calculate the y value at the given x value by substituting it into the original function
+            tangent_line = gradient * (self.x - value) + y_value #using point-slope form to calculate the equation of the tangent line
+            tangents.append(tangent_line) #add the calculated tangent line equation to the end of the list "tangents"
+        return tangents #returns the list of tangent line equations to be used if needed
+    def eval_xincpt(self):#solving for the x intercept of a function by making y = 0
+        x_intcpt = [] #creating list to store solutions
+        for func in self.functions:
+            x_intercept = sp.solve(func, self.x) #passing func = x**2 for example automatically assumes its = 0 and hence solves for roots
+            x_intcpt.append(x_intercept) #adds the calculated x intercepts to the end of the list "x_intcpt"
+        return x_intcpt #returns the list of x intercepts to be used if needed
